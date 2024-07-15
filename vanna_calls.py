@@ -77,8 +77,8 @@ def train_model_with_table(table_name):
 
 
 @st.cache_data(show_spinner="Importing new data and training ...")
-def import_new_data_and_train_cached(df, location):
-    table_name = add_new_data(df, location)
+def import_new_data_and_train_cached(df):
+    table_name = add_new_data(df)
     return train_model_with_table(table_name)
 
 

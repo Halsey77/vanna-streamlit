@@ -51,8 +51,18 @@ def init_db():
     add_init_data()
 
 
-def add_new_data(df: pd.DataFrame, place: str):
+def add_new_data(df: pd.DataFrame):
     conn = connect_db()
-    table_name = f"{place.upper()}_AIR"
-    df.to_sql(table_name, conn, if_exists="append", index=False)
-    return table_name
+    cur = conn.cursor()
+    
+    # get all table names
+    name_cur = cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    
+    # drop all table currently in the db
+    for name in name_cur:
+        cur.execute("DROP TABLE IF EXISTS " + name[0])
+
+    # add new table
+    df.to_sql("AIR", conn, if_exists="replace", index=False)
+
+    return "AIR"
