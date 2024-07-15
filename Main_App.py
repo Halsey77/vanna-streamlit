@@ -14,7 +14,7 @@ from vanna_calls import (
 
 avatar_url = "https://vanna.ai/img/vanna.svg"
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title='Main App', layout="wide")
 
 st.sidebar.title("Output Settings")
 st.sidebar.checkbox("Show SQL", value=True, key="show_sql")
@@ -25,7 +25,7 @@ st.sidebar.checkbox("Show Summary", value=True, key="show_summary")
 st.sidebar.checkbox("Show Follow-up Questions", value=True, key="show_followup")
 st.sidebar.button("Reset", on_click=lambda: set_question(None), use_container_width=True)
 
-st.title("Vanna AI")
+st.title("Your AI assistant")
 # st.sidebar.write(st.session_state)
 
 

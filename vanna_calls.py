@@ -8,10 +8,10 @@ def setup_vanna():
     vn.connect_to_sqlite("https://vanna.ai/Chinook.sqlite")
     return vn
 
-@st.cache_data(show_spinner="Generating sample questions ...")
+@st.cache_data(show_spinner="Generating sample quest    ions ...")
 def generate_questions_cached():
     vn = setup_vanna()
-    return vn.generate_questions()
+    return vn.generate_questions()  
 
 
 @st.cache_data(show_spinner="Generating SQL query ...")
@@ -56,3 +56,22 @@ def generate_followup_cached(question, sql, df):
 def generate_summary_cached(question, df):
     vn = setup_vanna()
     return vn.generate_summary(question=question, df=df)
+
+def import_new_data_to_bigquery(df):
+    #TODO: Implement this function
+    return None
+
+@st.cache_data(show_spinner="Importing new data and training ...")
+def import_new_data_and_train_cached(df):
+    vn = setup_vanna()
+    
+    import_new_data_to_bigquery(df)
+    
+    # Connect vanna to BigQuery and train the model
+    # TODO: Collect the project_id and dataset_id AND run the correct SQl query
+    vn.connect_to_bigquery(project_id=st.secrets.get("BIGQUERY_PROJECT_ID"), dataset_id=st.secrets.get("BIGQUERY_DATASET_ID"))
+    df_schema = vn.run_sql("SELECT * FROM AIR.COLUMNS")
+    plan = vn.train_model(df_schema=df_schema)
+    vn.train(plan=plan)
+    
+    return plan
